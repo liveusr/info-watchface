@@ -13,6 +13,18 @@
     "resources": {
         "media": [
             {
+                "file": "fonts/comic-sans.ttf",
+                "name": "FONT_COMIC_SANS_24",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
+                "file": "fonts/comic-sans.ttf",
+                "name": "FONT_COMIC_SANS_16",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
                 "file": "images/background.png",
                 "name": "IMAGE_BACKGROUND",
                 "type": "bitmap"
