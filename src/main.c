@@ -16,6 +16,43 @@ static GFont s_weather_font;
 /******************************************************************************/
 /******************************************************************************/
 
+static BitmapLayer *s_bluetooth_icon_layer;
+static GBitmap *s_bluetooth_icon_bitmap;
+
+static TextLayer *s_bluetooth_status_layer;
+static GFont s_bluetooth_status_font;
+
+static int s_battery_level;
+static Layer *s_battery_layer;
+
+/******************************************************************************/
+/******************************************************************************/
+
+static void battery_callback(BatteryChargeState state) {
+  // Record the new battery level
+  s_battery_level = state.charge_percent;
+  
+  // Update meter
+  layer_mark_dirty(s_battery_layer);
+}
+
+static void battery_update_proc(Layer *layer, GContext *ctx) {
+  GRect bounds = layer_get_bounds(layer);
+  int i, level = 10 - (s_battery_level / 10);
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Battery Level Changed to %d.", level);
+  
+  graphics_context_set_fill_color(ctx, GColorBlack);
+  graphics_draw_rect(ctx, GRect(0, 2, 2, bounds.size.h - 4));
+  graphics_draw_rect(ctx, GRect(2, 0, bounds.size.w - 2, bounds.size.h));
+  
+  for(i = 0 /* level * 2 */; i < 20; i += 2) {
+    graphics_draw_line(ctx, GPoint(4 + i, 2), GPoint(4 + i, bounds.size.h - 3));
+  }
+}
+
+/******************************************************************************/
+/******************************************************************************/
+
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // Store incoming information
   static char temperature_buffer[8];
@@ -144,6 +181,26 @@ static void main_window_load(Window *window) {
   s_weather_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_16));
   //text_layer_set_font(s_weather_layer, s_weather_font);
   //layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weather_layer));
+  
+  ////////////////////////////////////////////////////////////////////////////////
+  
+  s_bluetooth_icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BLUETOOTH);
+  s_bluetooth_icon_layer = bitmap_layer_create(GRect(1, 1, 7, 14));
+  bitmap_layer_set_bitmap(s_bluetooth_icon_layer, s_bluetooth_icon_bitmap);
+  layer_add_child(window_layer, bitmap_layer_get_layer(s_bluetooth_icon_layer));
+  
+  s_bluetooth_status_layer = text_layer_create(GRect(10, 0, 100, 15));
+  text_layer_set_background_color(s_bluetooth_status_layer, GColorClear);
+  text_layer_set_text_color(s_bluetooth_status_layer, GColorBlack);
+  text_layer_set_text_alignment(s_bluetooth_status_layer, GTextAlignmentCenter);
+  text_layer_set_text(s_bluetooth_status_layer, "Connected LEOnly");
+  s_bluetooth_status_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_12));
+  text_layer_set_font(s_bluetooth_status_layer, s_bluetooth_status_font);
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_bluetooth_status_layer));
+  
+  s_battery_layer = layer_create(GRect(118, 1, 25, 13));
+  layer_set_update_proc(s_battery_layer, battery_update_proc);
+  layer_add_child(window_get_root_layer(window), s_battery_layer);
 }
 
 static void main_window_unload(Window *window) {
@@ -162,6 +219,15 @@ static void main_window_unload(Window *window) {
   // Destroy weather elements
   text_layer_destroy(s_weather_layer);
   fonts_unload_custom_font(s_weather_font);
+  
+  ////////////////////////////////////////////////////////////////////////////////
+  
+  bitmap_layer_destroy(s_bluetooth_icon_layer);
+  
+  text_layer_destroy(s_bluetooth_status_layer);
+  fonts_unload_custom_font(s_bluetooth_status_font);
+  
+  layer_destroy(s_battery_layer);
 }
 
 
@@ -199,6 +265,11 @@ static void init() {
 
   // Open AppMessage
   app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+  
+  // Register for battery level updates
+  battery_state_service_subscribe(battery_callback);
+  // Ensure battery level is displayed from the start
+  battery_callback(battery_state_service_peek());
 }
 
 static void deinit() {

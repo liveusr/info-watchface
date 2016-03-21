@@ -13,6 +13,24 @@
     "resources": {
         "media": [
             {
+                "file": "images/bluetooth-icon.png",
+                "name": "IMAGE_BLUETOOTH",
+                "targetPlatforms": null,
+                "type": "bitmap"
+            },
+            {
+                "file": "fonts/comic-sans.ttf",
+                "name": "FONT_COMIC_SANS_12",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
+                "file": "fonts/comic-sans.ttf",
+                "name": "FONT_COMIC_SANS_10",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
                 "file": "fonts/comic-sans.ttf",
                 "name": "FONT_COMIC_SANS_24",
                 "targetPlatforms": null,
@@ -21,6 +39,12 @@
             {
                 "file": "fonts/comic-sans.ttf",
                 "name": "FONT_COMIC_SANS_16",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
+                "file": "fonts/comic-sans.ttf",
+                "name": "FONT_COMIC_SANS_8",
                 "targetPlatforms": null,
                 "type": "font"
             },
