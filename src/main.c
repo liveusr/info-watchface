@@ -25,6 +25,8 @@ static GFont s_bluetooth_status_font;
 static int s_battery_level;
 static Layer *s_battery_layer;
 
+static TextLayer *s_local_time_layer;
+
 /******************************************************************************/
 /******************************************************************************/
 
@@ -185,11 +187,11 @@ static void main_window_load(Window *window) {
   ////////////////////////////////////////////////////////////////////////////////
   
   s_bluetooth_icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BLUETOOTH);
-  s_bluetooth_icon_layer = bitmap_layer_create(GRect(1, 1, 7, 14));
+  s_bluetooth_icon_layer = bitmap_layer_create(GRect(2, 1, 7, 14));
   bitmap_layer_set_bitmap(s_bluetooth_icon_layer, s_bluetooth_icon_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_bluetooth_icon_layer));
   
-  s_bluetooth_status_layer = text_layer_create(GRect(10, 0, 100, 15));
+  s_bluetooth_status_layer = text_layer_create(GRect(12, 0, 100, 15));
   text_layer_set_background_color(s_bluetooth_status_layer, GColorClear);
   text_layer_set_text_color(s_bluetooth_status_layer, GColorBlack);
   text_layer_set_text_alignment(s_bluetooth_status_layer, GTextAlignmentCenter);
@@ -198,9 +200,17 @@ static void main_window_load(Window *window) {
   text_layer_set_font(s_bluetooth_status_layer, s_bluetooth_status_font);
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_bluetooth_status_layer));
   
-  s_battery_layer = layer_create(GRect(118, 1, 25, 13));
+  s_battery_layer = layer_create(GRect(117, 2, 25, 12));
   layer_set_update_proc(s_battery_layer, battery_update_proc);
   layer_add_child(window_get_root_layer(window), s_battery_layer);
+  
+  s_local_time_layer = text_layer_create(GRect(0, 16, bounds.size.w, 36));
+  text_layer_set_background_color(s_local_time_layer, GColorBlack);
+  text_layer_set_text_color(s_local_time_layer, GColorClear);
+  text_layer_set_text_alignment(s_local_time_layer, GTextAlignmentCenter);
+  text_layer_set_text(s_local_time_layer, "12:46:08");
+  text_layer_set_font(s_local_time_layer, fonts_get_system_font(FONT_KEY_DROID_SERIF_28_BOLD));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_local_time_layer));
 }
 
 static void main_window_unload(Window *window) {
@@ -228,6 +238,8 @@ static void main_window_unload(Window *window) {
   fonts_unload_custom_font(s_bluetooth_status_font);
   
   layer_destroy(s_battery_layer);
+  
+  text_layer_destroy(s_local_time_layer);
 }
 
 
