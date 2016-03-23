@@ -136,7 +136,7 @@ static void main_window_load(Window *window) {
   
   
   // Create GBitmap
-  s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
+  s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BLUETOOTH_ERROR);
 
   // Create BitmapLayer to display the GBitmap
   s_background_layer = bitmap_layer_create(bounds);
@@ -158,7 +158,7 @@ static void main_window_load(Window *window) {
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
 
   // Create GFont
-  s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_PERFECT_DOS_48));
+  s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_9));
 
   // Apply to TextLayer
   //text_layer_set_font(s_time_layer, s_time_font);
@@ -179,38 +179,38 @@ static void main_window_load(Window *window) {
   text_layer_set_text(s_weather_layer, "Loading...");
 
   // Create second custom font, apply it and add to Window
-  //s_weather_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_PERFECT_DOS_20));
-  s_weather_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_16));
+  s_weather_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_9));
   //text_layer_set_font(s_weather_layer, s_weather_font);
   //layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weather_layer));
   
   ////////////////////////////////////////////////////////////////////////////////
   
-  s_bluetooth_icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BLUETOOTH);
-  s_bluetooth_icon_layer = bitmap_layer_create(GRect(2, 1, 7, 14));
+  s_bluetooth_icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BLUETOOTH_ICON);
+  s_bluetooth_icon_layer = bitmap_layer_create(GRect(1, 1, 11, 11));
   bitmap_layer_set_bitmap(s_bluetooth_icon_layer, s_bluetooth_icon_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_bluetooth_icon_layer));
   
-  s_bluetooth_status_layer = text_layer_create(GRect(12, 0, 100, 15));
+  s_bluetooth_status_layer = text_layer_create(GRect(14, 1, 102, 11));
   text_layer_set_background_color(s_bluetooth_status_layer, GColorClear);
   text_layer_set_text_color(s_bluetooth_status_layer, GColorBlack);
   text_layer_set_text_alignment(s_bluetooth_status_layer, GTextAlignmentCenter);
-  text_layer_set_text(s_bluetooth_status_layer, "Connected LEOnly");
-  s_bluetooth_status_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_12));
+  text_layer_set_text(s_bluetooth_status_layer, "Mon, Mar 21st, 2016");
+  s_bluetooth_status_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_9));
   text_layer_set_font(s_bluetooth_status_layer, s_bluetooth_status_font);
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_bluetooth_status_layer));
   
-  s_battery_layer = layer_create(GRect(117, 2, 25, 12));
+  s_battery_layer = layer_create(GRect(118, 1, 25, 11));
   layer_set_update_proc(s_battery_layer, battery_update_proc);
   layer_add_child(window_get_root_layer(window), s_battery_layer);
   
-  s_local_time_layer = text_layer_create(GRect(0, 16, bounds.size.w, 36));
+  s_local_time_layer = text_layer_create(GRect(0, 13, bounds.size.w, 36));
   text_layer_set_background_color(s_local_time_layer, GColorBlack);
   text_layer_set_text_color(s_local_time_layer, GColorClear);
   text_layer_set_text_alignment(s_local_time_layer, GTextAlignmentCenter);
   text_layer_set_text(s_local_time_layer, "12:46:08");
   text_layer_set_font(s_local_time_layer, fonts_get_system_font(FONT_KEY_DROID_SERIF_28_BOLD));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_local_time_layer));
+  
 }
 
 static void main_window_unload(Window *window) {
@@ -240,6 +240,7 @@ static void main_window_unload(Window *window) {
   layer_destroy(s_battery_layer);
   
   text_layer_destroy(s_local_time_layer);
+  
 }
 
 

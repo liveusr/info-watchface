@@ -13,56 +13,27 @@
     "resources": {
         "media": [
             {
+                "file": "images/bluetooth-error.png",
+                "name": "IMAGE_BLUETOOTH_ERROR",
+                "targetPlatforms": null,
+                "type": "bitmap"
+            },
+            {
                 "file": "images/bluetooth-icon.png",
-                "name": "IMAGE_BLUETOOTH",
+                "name": "IMAGE_BLUETOOTH_ICON",
                 "targetPlatforms": null,
                 "type": "bitmap"
             },
             {
-                "file": "fonts/comic-sans.ttf",
-                "name": "FONT_COMIC_SANS_12",
+                "file": "fonts/comic-sans-bold.ttf",
+                "name": "FONT_COMIC_SANS_BOLD_14",
                 "targetPlatforms": null,
                 "type": "font"
             },
             {
                 "file": "fonts/comic-sans.ttf",
-                "name": "FONT_COMIC_SANS_10",
+                "name": "FONT_COMIC_SANS_9",
                 "targetPlatforms": null,
-                "type": "font"
-            },
-            {
-                "file": "fonts/comic-sans.ttf",
-                "name": "FONT_COMIC_SANS_24",
-                "targetPlatforms": null,
-                "type": "font"
-            },
-            {
-                "file": "fonts/comic-sans.ttf",
-                "name": "FONT_COMIC_SANS_16",
-                "targetPlatforms": null,
-                "type": "font"
-            },
-            {
-                "file": "fonts/comic-sans.ttf",
-                "name": "FONT_COMIC_SANS_8",
-                "targetPlatforms": null,
-                "type": "font"
-            },
-            {
-                "file": "images/background.png",
-                "name": "IMAGE_BACKGROUND",
-                "type": "bitmap"
-            },
-            {
-                "compatibility": "2.7",
-                "file": "fonts/perfect-dos-vga.ttf",
-                "name": "FONT_PERFECT_DOS_20",
-                "type": "font"
-            },
-            {
-                "compatibility": "2.7",
-                "file": "fonts/perfect-dos-vga.ttf",
-                "name": "FONT_PERFECT_DOS_48",
                 "type": "font"
             }
         ]
