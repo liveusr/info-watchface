@@ -19,13 +19,20 @@ static GFont s_weather_font;
 static BitmapLayer *s_bluetooth_icon_layer;
 static GBitmap *s_bluetooth_icon_bitmap;
 
-static TextLayer *s_bluetooth_status_layer;
-static GFont s_bluetooth_status_font;
+static TextLayer *s_date_layer;
+static GFont s_date_font;
 
 static int s_battery_level;
 static Layer *s_battery_layer;
 
 static TextLayer *s_local_time_layer;
+
+static BitmapLayer *s_black_background_layer;
+static GBitmap *s_black_background_bitmap;
+static TextLayer *s_de_text_layer;
+static TextLayer *s_de_time_layer;
+static TextLayer *s_in_text_layer;
+static TextLayer *s_in_time_layer;
 
 /******************************************************************************/
 /******************************************************************************/
@@ -158,7 +165,7 @@ static void main_window_load(Window *window) {
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
 
   // Create GFont
-  s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_9));
+  s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_10));
 
   // Apply to TextLayer
   //text_layer_set_font(s_time_layer, s_time_font);
@@ -179,25 +186,26 @@ static void main_window_load(Window *window) {
   text_layer_set_text(s_weather_layer, "Loading...");
 
   // Create second custom font, apply it and add to Window
-  s_weather_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_9));
+  s_weather_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_10));
   //text_layer_set_font(s_weather_layer, s_weather_font);
   //layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weather_layer));
   
   ////////////////////////////////////////////////////////////////////////////////
   
-  s_bluetooth_icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BLUETOOTH_ICON);
+  s_bluetooth_icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BLUETOOTH_ERROR);
   s_bluetooth_icon_layer = bitmap_layer_create(GRect(1, 1, 11, 11));
   bitmap_layer_set_bitmap(s_bluetooth_icon_layer, s_bluetooth_icon_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_bluetooth_icon_layer));
   
-  s_bluetooth_status_layer = text_layer_create(GRect(14, 1, 102, 11));
-  text_layer_set_background_color(s_bluetooth_status_layer, GColorClear);
-  text_layer_set_text_color(s_bluetooth_status_layer, GColorBlack);
-  text_layer_set_text_alignment(s_bluetooth_status_layer, GTextAlignmentCenter);
-  text_layer_set_text(s_bluetooth_status_layer, "Mon, Mar 21st, 2016");
-  s_bluetooth_status_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_9));
-  text_layer_set_font(s_bluetooth_status_layer, s_bluetooth_status_font);
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_bluetooth_status_layer));
+  s_date_layer = text_layer_create(GRect(0, 46, bounds.size.w, 20));
+  text_layer_set_background_color(s_date_layer, GColorClear);
+  text_layer_set_text_color(s_date_layer, GColorBlack);
+  text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
+  text_layer_set_text(s_date_layer, "Mon, Mar 21st");
+  //s_date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_COMIC_SANS_BOLD_14));
+  //text_layer_set_font(s_date_layer, s_date_font);
+  text_layer_set_font(s_date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
   
   s_battery_layer = layer_create(GRect(118, 1, 25, 11));
   layer_set_update_proc(s_battery_layer, battery_update_proc);
@@ -210,6 +218,44 @@ static void main_window_load(Window *window) {
   text_layer_set_text(s_local_time_layer, "12:46:08");
   text_layer_set_font(s_local_time_layer, fonts_get_system_font(FONT_KEY_DROID_SERIF_28_BOLD));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_local_time_layer));
+  
+  s_black_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BLACK_BACKGROUND);
+  s_black_background_layer = bitmap_layer_create(GRect(0, 68, bounds.size.w, 20));
+  bitmap_layer_set_bitmap(s_black_background_layer, s_black_background_bitmap);
+  layer_add_child(window_layer, bitmap_layer_get_layer(s_black_background_layer));
+  
+  s_de_text_layer = text_layer_create(GRect(0, 66, 30, 20)); //30
+  text_layer_set_background_color(s_de_text_layer, GColorClear);
+  text_layer_set_text_color(s_de_text_layer, GColorClear);
+  text_layer_set_text_alignment(s_de_text_layer, GTextAlignmentCenter);
+  text_layer_set_text(s_de_text_layer, "DEU");
+  text_layer_set_font(s_de_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_de_text_layer));
+  
+  s_de_time_layer = text_layer_create(GRect(30, 66, 42, 20)); //42
+  text_layer_set_background_color(s_de_time_layer, GColorClear);
+  text_layer_set_text_color(s_de_time_layer, GColorClear);
+  text_layer_set_text_alignment(s_de_time_layer, GTextAlignmentCenter);
+  text_layer_set_text(s_de_time_layer, "12:46");
+  text_layer_set_font(s_de_time_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_de_time_layer));
+  
+  s_in_text_layer = text_layer_create(GRect(74, 66, 30, 20));
+  text_layer_set_background_color(s_in_text_layer, GColorClear);
+  text_layer_set_text_color(s_in_text_layer, GColorClear);
+  text_layer_set_text_alignment(s_in_text_layer, GTextAlignmentCenter);
+  text_layer_set_text(s_in_text_layer, "IND");
+  text_layer_set_font(s_in_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_in_text_layer));
+  
+  s_in_time_layer = text_layer_create(GRect(102, 66, 42, 20));
+  text_layer_set_background_color(s_in_time_layer, GColorClear);
+  text_layer_set_text_color(s_in_time_layer, GColorClear);
+  text_layer_set_text_alignment(s_in_time_layer, GTextAlignmentCenter);
+  text_layer_set_text(s_in_time_layer, "12:46");
+  text_layer_set_font(s_in_time_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_in_time_layer));
+  
   
 }
 
@@ -234,13 +280,17 @@ static void main_window_unload(Window *window) {
   
   bitmap_layer_destroy(s_bluetooth_icon_layer);
   
-  text_layer_destroy(s_bluetooth_status_layer);
-  fonts_unload_custom_font(s_bluetooth_status_font);
+  text_layer_destroy(s_date_layer);
+  fonts_unload_custom_font(s_date_font);
   
   layer_destroy(s_battery_layer);
   
   text_layer_destroy(s_local_time_layer);
   
+  text_layer_destroy(s_de_text_layer);
+  text_layer_destroy(s_de_time_layer);
+  text_layer_destroy(s_in_text_layer);
+  text_layer_destroy(s_in_time_layer);
 }
 
 

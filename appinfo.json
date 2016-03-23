@@ -13,6 +13,12 @@
     "resources": {
         "media": [
             {
+                "file": "images/black-background.png",
+                "name": "IMAGE_BLACK_BACKGROUND",
+                "targetPlatforms": null,
+                "type": "bitmap"
+            },
+            {
                 "file": "images/bluetooth-error.png",
                 "name": "IMAGE_BLUETOOTH_ERROR",
                 "targetPlatforms": null,
@@ -32,7 +38,7 @@
             },
             {
                 "file": "fonts/comic-sans.ttf",
-                "name": "FONT_COMIC_SANS_9",
+                "name": "FONT_COMIC_SANS_10",
                 "targetPlatforms": null,
                 "type": "font"
             }
